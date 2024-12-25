@@ -51,7 +51,7 @@ void free_hashtable(Hashtable *map);
 void add_to_hashtable(Hashtable *map, void *key);
 
 /**
- * Return the value given a key. Returns -1 if no key was found in the hashtable
+ * Return the value of a key/value pair. Returns -1 if no key was found in the hashtable
  */
 int search_hashtable(Hashtable *map, void *key);
 

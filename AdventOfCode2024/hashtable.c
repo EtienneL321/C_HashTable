@@ -146,11 +146,34 @@ int search_hashtable(Hashtable *map, void *key)
   }
 }
 
+void remove_from_hashtable(Hashtable *map, void *key)
+{
+  // Calculate hash of key
+  unsigned long h = hash(key);
+
+  int i;
+  while ((i = search_collision(map, h)) == -1)
+  {
+    h++;
+  }
+
+  if (i == 0)
+  {
+    printf("Key \"%s\" was not found. Not removal needed.\n", (char *)key);
+  }
+  else
+  {
+    *((int *)(map->val) + i) = -1;
+    *((map->key) + i) = 0;
+    *((char **)(map->str_key) + (2 * i)) = NULL;
+  }
+}
+
 void print_hashtable(Hashtable *map)
 {
   for (int i = 0; i < map->size; i++)
   {
-    if (*((int *)(map->val) + i) != 0)
+    if ((*((int *)(map->val) + i) != 0) && (*((int *)(map->val) + i) != -1))
     {
       printf("index: %4d  ||  key: %20lu  || str_key: %16s  ||  value: %4d\n", i, *((map->key) + i), *((char **)(map->str_key) + (2 * i)), *((int *)(map->val) + i));
     }
