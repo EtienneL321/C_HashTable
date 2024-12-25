@@ -28,17 +28,46 @@ int collision(Hashtable *map, unsigned long h)
   // Get index from hash of key
   int i = (int)(h % (unsigned long)(map->size));
 
-  // Compare stored key to current hash at index i
+  // Check if value at index i is 0
   if (*((int *)(map->val) + i) == 0)
   {
+    map->count += 1;
     return i;
   }
+  // Compare stored hash key to curernt hash at index i
   else if (*((map->key) + i) == h)
   {
     return i;
   }
   else
   {
+    printf("Collision detected for hash %lu\n", h);
+    return -1;
+  }
+}
+
+/**
+ * Return -1 if the current hash causes a collision
+ * Return 0 if the current index is empty
+ * Returns a correct index otherwize
+ */
+int search_collision(Hashtable *map, unsigned long h)
+{
+  // Get index from hash of key
+  int i = (int)(h % (unsigned long)(map->size));
+
+  // Compare stored hash key to curernt hash at index i
+  if (*((map->key) + i) == h)
+  {
+    return i;
+  }
+  else if (*((int *)(map->val) + i) == 0)
+  {
+    return 0;
+  }
+  else
+  {
+    printf("Collision detected for hash %lu\n", h);
     return -1;
   }
 }
@@ -77,7 +106,7 @@ void add_to_hashtable(Hashtable *map, void *key)
   // Calculate hash of key
   unsigned long h = hash(key);
 
-  // Iterate until i does not create a collision
+  // Use linear probing to iterate until i does not create a collision
   int i;
   while ((i = collision(map, h)) == -1)
   {
@@ -95,13 +124,35 @@ void add_to_hashtable(Hashtable *map, void *key)
   *((char **)(map->str_key) + (2 * i)) = (char *)key;
 }
 
+int search_hashtable(Hashtable *map, void *key)
+{
+  // Calculate hash of key
+  unsigned long h = hash(key);
+
+  int i;
+  while ((i = search_collision(map, h)) == -1)
+  {
+    h++;
+  }
+
+  if (i == 0)
+  {
+    printf("Key \"%s\" was not found.\n", (char *)key);
+    return -1;
+  }
+  else
+  {
+    return *((int *)(map->val) + i);
+  }
+}
+
 void print_hashtable(Hashtable *map)
 {
   for (int i = 0; i < map->size; i++)
   {
     if (*((int *)(map->val) + i) != 0)
     {
-      printf("index: %4d  ||  key: %8lu  || str_key: %8s  ||  value: %4d\n", i, *((map->key) + i), *((char **)(map->str_key) + (2 * i)), *((int *)(map->val) + i));
+      printf("index: %4d  ||  key: %20lu  || str_key: %16s  ||  value: %4d\n", i, *((map->key) + i), *((char **)(map->str_key) + (2 * i)), *((int *)(map->val) + i));
     }
   }
 }

@@ -8,6 +8,22 @@
  *
  * Need to be able to create and remove a hashmap
  *
+ *
+ * Things that still need to be considered
+ * - Test that linear probing works
+ * - Add searching for value given a key
+ * - Resize hashtable once count is 33% of the total size
+ * - Add removal of key/value pair from hashmap
+ *
+ * - When storing the string key, we are simply passing the pointer
+ * which means we are creating a shallow copy and not a deep copy.
+ * This needs to be fixed by copying each character at a time and
+ * allocating new memory for it so that it is immutable.
+ *
+ * Linear probing affects addition, searching, and deletion of keys in
+ * the hashtable. More information can be found here
+ * https://stackoverflow.com/questions/6338798/is-searching-a-hashtable-for-a-value-that-isnt-there-on-linear-probing
+ *
  */
 
 typedef struct Hashtable
@@ -33,6 +49,16 @@ void free_hashtable(Hashtable *map);
  * Treat hashtable as a Counter and add 1 to current count of key
  */
 void add_to_hashtable(Hashtable *map, void *key);
+
+/**
+ * Return the value given a key. Returns -1 if no key was found in the hashtable
+ */
+int search_hashtable(Hashtable *map, void *key);
+
+/**
+ * Remove the a key from a hashtable if it exists
+ */
+void remove_from_hashtable(Hashtable *map, void *key);
 
 /**
  * Print the contents of the hashtable
