@@ -12,10 +12,11 @@
 
 typedef struct Hashtable
 {
-  void *val; // key value pair
-  void *key; // hash key pair (used to check for collision)
-  int size;  // size of hashtable
-  int count; // current number of items in hashtable
+  void *val;          // key value pair
+  unsigned long *key; // hash key pair (used to check for collision)
+  void *str_key;      // string key
+  int size;           // size of hashtable
+  int count;          // current number of items in hashtable
 } Hashtable;
 
 /**
