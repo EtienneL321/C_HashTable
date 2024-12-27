@@ -72,9 +72,55 @@ int search_collision(Hashtable *map, unsigned long h)
   }
 }
 
+/**
+ * Double size of hashtable
+ */
+void resize_hashtable(Hashtable *map)
+{
+  Hashtable new_map;
+  initialize_hashtable(&new_map);
+
+  new_map.size = map->size * 2;
+
+  new_map.val = (int *)calloc(new_map.size * sizeof(int), 0);
+  new_map.key = malloc(new_map.size * sizeof(unsigned long));
+  new_map.str_key = (char **)malloc(new_map.size * sizeof(char *));
+
+  for (int i = 0; i < map->size; i++)
+  {
+    if ((*((int *)(map->val) + i) != 0) && (*((int *)(map->val) + i) != -1))
+    {
+      unsigned long h = *((map->key) + i);
+      int j;
+      while ((j = collision(&new_map, h)) == -1)
+      {
+        h++;
+      }
+
+      // Copy over values
+      *((int *)(new_map.val) + j) = *((int *)(map->val) + i);
+
+      // Copy over hash keys
+      *((new_map.key) + j) = *((unsigned long *)(map->key) + i);
+
+      // Copy over string keys
+      *((char **)(new_map.str_key) + (2 * j)) = *((char **)(map->str_key) + (2 * i));
+    }
+  }
+
+  // Free old memory
+  free(map->val);
+  free(map->key);
+  free(map->str_key);
+
+  *map = new_map;
+}
+
 void initialize_hashtable(Hashtable *map)
 {
   map->val = (int *)calloc(DEFAULT_SIZE * sizeof(int), 0);
+  // Using calloc here instead of malloc breaks a lot of stuff and I should figure
+  // out why
   map->key = malloc(DEFAULT_SIZE * sizeof(unsigned long));
   map->str_key = (char **)malloc(DEFAULT_SIZE * sizeof(char *));
   map->size = DEFAULT_SIZE;
@@ -113,15 +159,23 @@ void add_to_hashtable(Hashtable *map, void *key)
     h++;
   }
 
-  // increment by 1
+  // Increment by 1
   *((int *)(map->val) + i) += 1;
 
-  // store key
+  // Store key
   *((map->key) + i) = h;
 
-  // store string key
+  // Store string key
   // We times i by 2 because the size of a pointer is 8 bytes
   *((char **)(map->str_key) + (2 * i)) = (char *)key;
+
+  // Check for 33% capicity. If over, double the size of the hashtable
+  if (((map->count * 100) / map->size) > 33)
+  {
+    resize_hashtable(map);
+    printf("Size is now %d.\n", map->size);
+  }
+  printf("Count is now %d.\n", map->count);
 }
 
 int search_hashtable(Hashtable *map, void *key)
@@ -166,6 +220,8 @@ void remove_from_hashtable(Hashtable *map, void *key)
     *((int *)(map->val) + i) = -1;
     *((map->key) + i) = 0;
     *((char **)(map->str_key) + (2 * i)) = NULL;
+
+    map->count -= 1;
   }
 }
 
@@ -173,9 +229,9 @@ void print_hashtable(Hashtable *map)
 {
   for (int i = 0; i < map->size; i++)
   {
-    if ((*((int *)(map->val) + i) != 0) && (*((int *)(map->val) + i) != -1))
-    {
-      printf("index: %4d  ||  key: %20lu  || str_key: %16s  ||  value: %4d\n", i, *((map->key) + i), *((char **)(map->str_key) + (2 * i)), *((int *)(map->val) + i));
-    }
+    // if ((*((int *)(map->val) + i) != 0) && (*((int *)(map->val) + i) != -1))
+    // {
+    printf("index: %4d  ||  key: %20lu  || str_key: %16s  ||  value: %4d\n", i, *((map->key) + i), *((char **)(map->str_key) + (2 * i)), *((int *)(map->val) + i));
+    // }
   }
 }
