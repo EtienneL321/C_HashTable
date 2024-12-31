@@ -137,16 +137,26 @@ Hashtable *initialize_hashtable()
 void free_hashtable(Hashtable *map)
 {
   free(map->val);
+  map->val = NULL;
+
   free(map->key);
+  map->key = NULL;
+
   free(map->str_key);
+  map->str_key = NULL;
 
-  map->size = 0;
-  map->count = 0;
+  if (map->val != NULL || map->key != NULL || map->str_key != NULL)
+  {
+    printf("Failed to free hashtable memory\n");
+  }
 
-  // if (map->val != NULL || map->key != NULL)
-  // {
-  //   printf("Failed to free hashtable memory\n");
-  // }
+  free(map);
+  map = NULL;
+
+  if (map != NULL)
+  {
+    printf("Failed to free hashtable memory\n");
+  }
 }
 
 void add_to_hashtable(Hashtable *map, void *key)
