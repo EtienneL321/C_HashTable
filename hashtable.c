@@ -109,15 +109,15 @@ void resize_hashtable(Hashtable *map)
   }
 
   // Free old memory
-  free(map->val);
-  free(map->key);
-  free(map->str_key);
+  free_hashtable(map);
 
   *map = new_map;
 }
 
-void initialize_hashtable(Hashtable *map)
+Hashtable *initialize_hashtable()
 {
+  Hashtable *map = malloc(sizeof(Hashtable));
+
   map->val = (int *)calloc(DEFAULT_SIZE * sizeof(int), 0);
   // Using calloc here instead of malloc breaks a lot of stuff and I should figure
   // out why
@@ -130,6 +130,8 @@ void initialize_hashtable(Hashtable *map)
   {
     printf("Failed to initialize hashtable\n");
   }
+
+  return map;
 }
 
 void free_hashtable(Hashtable *map)

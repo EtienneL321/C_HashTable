@@ -38,7 +38,7 @@ typedef struct Hashtable
 /**
  * Initializes void pointer of type Hashtable
  */
-void initialize_hashtable(Hashtable *map);
+Hashtable *initialize_hashtable();
 
 /**
  * Free allocated space to hashtable
