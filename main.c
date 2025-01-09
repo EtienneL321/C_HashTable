@@ -17,16 +17,16 @@ int main()
   Hashtable *map = initialize_hashtable();
 
   add_to_hashtable(map, "sport");
-  add_to_hashtable(map, "Sport");
-  add_to_hashtable(map, "sport");
-  add_to_hashtable(map, "train");
-  add_to_hashtable(map, "Hello World!");
-  add_to_hashtable(map, "Hello World!");
-  add_to_hashtable(map, "Hello World!");
-  add_to_hashtable(map, "Hello World!");
-  add_to_hashtable(map, "Hello World!");
-  add_to_hashtable(map, "Hello World!");
-  add_to_hashtable(map, "Hello World");
+  // add_to_hashtable(map, "Sport");
+  // add_to_hashtable(map, "sport");
+  // add_to_hashtable(map, "train");
+  // add_to_hashtable(map, "Hello World!");
+  // add_to_hashtable(map, "Hello World!");
+  // add_to_hashtable(map, "Hello World!");
+  // add_to_hashtable(map, "Hello World!");
+  // add_to_hashtable(map, "Hello World!");
+  // add_to_hashtable(map, "Hello World");
+  // add_to_hashtable(map, "Apple");
 
   print_hashtable(map);
 
@@ -47,7 +47,6 @@ int main()
 
   // key = "sport";
   // remove_from_hashtable(map, key);
-  // print_hashtable(map);
 
   // add_to_hashtable(map, "tree");
   // add_to_hashtable(map, "Francais");
@@ -59,7 +58,7 @@ int main()
   // add_to_hashtable(map, "Rio");
   // add_to_hashtable(map, "Hungry");
 
-  print_hashtable(map);
+  // print_hashtable(map);
 
   free_hashtable(map);
   printf("\n");

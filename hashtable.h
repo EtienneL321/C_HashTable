@@ -30,13 +30,13 @@ typedef struct Hashtable
 {
   void *val;          // key value pair
   unsigned long *key; // hash key pair (used to check for collision)
-  void *str_key;      // string key
+  char **str_key;     // string key
   int size;           // size of hashtable
   int count;          // current number of items in hashtable
 } Hashtable;
 
 /**
- * Initializes void pointer of type Hashtable
+ * Initializes pointer of type Hashtable
  */
 Hashtable *initialize_hashtable();
 
@@ -48,17 +48,17 @@ void free_hashtable(Hashtable *map);
 /**
  * Treat hashtable as a Counter and add 1 to current count of key
  */
-void add_to_hashtable(Hashtable *map, void *key);
+void add_to_hashtable(Hashtable *map, char *key);
 
 /**
  * Return the value of a key/value pair. Returns -1 if no key was found in the hashtable
  */
-int search_hashtable(Hashtable *map, void *key);
+int search_hashtable(Hashtable *map, char *key);
 
 /**
  * Remove the a key from a hashtable if it exists
  */
-void remove_from_hashtable(Hashtable *map, void *key);
+void remove_from_hashtable(Hashtable *map, char *key);
 
 /**
  * Print the contents of the hashtable
