@@ -17,16 +17,16 @@ int main()
   Hashtable *map = initialize_hashtable();
 
   add_to_hashtable(map, "sport");
-  // add_to_hashtable(map, "Sport");
-  // add_to_hashtable(map, "sport");
-  // add_to_hashtable(map, "train");
-  // add_to_hashtable(map, "Hello World!");
-  // add_to_hashtable(map, "Hello World!");
-  // add_to_hashtable(map, "Hello World!");
-  // add_to_hashtable(map, "Hello World!");
-  // add_to_hashtable(map, "Hello World!");
-  // add_to_hashtable(map, "Hello World");
-  // add_to_hashtable(map, "Apple");
+  add_to_hashtable(map, "Sport");
+  add_to_hashtable(map, "sport");
+  add_to_hashtable(map, "train");
+  add_to_hashtable(map, "Hello World!");
+  add_to_hashtable(map, "Hello World!");
+  add_to_hashtable(map, "Hello World!");
+  add_to_hashtable(map, "Hello World!");
+  add_to_hashtable(map, "Hello World!");
+  add_to_hashtable(map, "Hello World");
+  add_to_hashtable(map, "Apple");
 
   print_hashtable(map);
 
