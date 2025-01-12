@@ -28,7 +28,7 @@
 
 typedef struct Hashtable
 {
-  void *val;          // key value pair
+  int *val;           // key value pair
   unsigned long *key; // hash key pair (used to check for collision)
   char **str_key;     // string key
   int size;           // size of hashtable

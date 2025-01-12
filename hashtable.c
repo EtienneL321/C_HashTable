@@ -3,7 +3,7 @@
 
 #include "hashtable.h"
 
-#define DEFAULT_SIZE 16
+#define DEFAULT_SIZE 8
 
 /**
  * djb2 hash function
@@ -31,13 +31,20 @@ char *copy_string(char *str)
     size++;
   }
 
-  char *copy = malloc((size * sizeof(char)) + 1);
+  printf("size is %d\n", size);
+
+  char *copy = calloc(5, sizeof(char));
+  printf("before\n");
+  printf("string %s\n", str);
   for (int i = 0; i < size; i++)
   {
+    printf("malloc");
     *(copy + i) = *(str + i);
   }
 
   *(copy + size) = '\0';
+
+  printf("new string is %s\n", copy);
 
   return copy;
 }
@@ -139,11 +146,27 @@ void resize_hashtable(Hashtable *map)
 Hashtable *initialize_hashtable()
 {
   Hashtable *map = malloc(sizeof(Hashtable));
+  printf("Size is %d\n\n", sizeof(Hashtable));
+  printf("Address of map value is %18p\n", &(map->val));
+  printf("Address of map key is %20p\n", &(map->key));
+  printf("Address of map string key is %13p\n", &(map->str_key));
+  printf("Address of map size is %19p\n", &(map->size));
+  printf("Address of map count is %18p\n\n", &(map->count));
 
-  map->val = (int *)calloc(DEFAULT_SIZE * sizeof(int), 0);
+  map->val = calloc(DEFAULT_SIZE, sizeof(int));
   // Using calloc here instead of malloc breaks a lot of stuff and I should figure out why
-  map->key = malloc(DEFAULT_SIZE * sizeof(unsigned long));
+  map->key = calloc(DEFAULT_SIZE, sizeof(unsigned long));
   map->str_key = malloc(DEFAULT_SIZE * sizeof(char *));
+
+  printf("Address of first map value is %18p\n", map->val);
+  printf("Address of first map key is %20p\n", map->key);
+  printf("Address of first map string key is %13p\n\n", map->str_key);
+
+  // We need to initialize the pointers to string to NULL
+  for (int i = 0; i < DEFAULT_SIZE; i++)
+  {
+    *(map->str_key + (2 * i)) = NULL;
+  }
   map->size = DEFAULT_SIZE;
   map->count = 0;
 
@@ -157,6 +180,7 @@ Hashtable *initialize_hashtable()
 
 void free_hashtable(Hashtable *map)
 {
+  printf("Freeing memory\n");
   free(map->val);
   map->val = NULL;
 
@@ -168,8 +192,8 @@ void free_hashtable(Hashtable *map)
     if (*(map->str_key + (2 * i)) != NULL)
     {
       free(*(map->str_key + (2 * i)));
+      *(map->str_key + (2 * i)) = NULL;
     }
-    *(map->str_key + (2 * i)) = NULL;
   }
   free(map->str_key);
   map->str_key = NULL;
@@ -184,7 +208,7 @@ void free_hashtable(Hashtable *map)
 
   if (map != NULL)
   {
-    printf("Failed to free hashtable memory\n");
+    printf("Failed to free hashtable\n");
   }
 }
 
@@ -192,16 +216,16 @@ void add_to_hashtable(Hashtable *map, char *key)
 {
   // Calculate hash of key
   unsigned long h = hash(key);
-
   // Use linear probing to iterate until i does not create a collision
-  int i;
+
+  int i = 0;
   while ((i = collision(map, h)) == -1)
   {
     h++;
   }
 
   // Increment by 1
-  *((int *)(map->val) + i) += 1;
+  *((map->val) + i) += 1;
 
   // Store key
   *((map->key) + i) = h;
@@ -211,11 +235,11 @@ void add_to_hashtable(Hashtable *map, char *key)
   *((map->str_key) + (2 * i)) = copy_string(key);
 
   // Check for 33% capicity. If over, double the size of the hashtable
-  if (((map->count * 100) / map->size) > 33)
-  {
-    resize_hashtable(map);
-    printf("Size is now %d.\n", map->size);
-  }
+  // if (((map->count * 100) / map->size) > 33)
+  // {
+  //   resize_hashtable(map);
+  //   printf("Size is now %d.\n", map->size);
+  // }
 }
 
 int search_hashtable(Hashtable *map, char *key)
@@ -271,7 +295,7 @@ void print_hashtable(Hashtable *map)
   {
     // if ((*((int *)(map->val) + i) != 0) && (*((int *)(map->val) + i) != -1))
     // {
-    printf("index: %4d  ||  key: %20lu  || str_key: %16s  ||  value: %4d\n", i, *((map->key) + i), *((map->str_key) + (2 * i)), *((int *)(map->val) + i));
+    printf("index: %4d  ||  key: %20lu  || str_key: %16s  ||  value: %4d\n", i, *((map->key) + i), *((map->str_key) + (2 * i)), *((map->val) + i));
     // }
   }
 }
