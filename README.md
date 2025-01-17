@@ -27,3 +27,9 @@ I will need to add a TON of error handling once the hashtable works as expected.
 Rather than use GDB to debug, I will switch over to LLDB since it seems to be more compatible with Apple's suite of technologies.
 
 - As of Dec 31st, the allocation of memory for a hashtable is done all on the stack and is freed using the free_hashtable method. I am attempting to create a deep copy of the string key copy I am holding but am having buffer overflow issues I am having trouble understanding which is why I need to learn how to use lldb to look into memory what is being written where and why.
+
+# Cool GBD tips and tricks
+
+Use @ operand to print contiguous memory (in an array format)
+
+p (\*(\*map).val)@16

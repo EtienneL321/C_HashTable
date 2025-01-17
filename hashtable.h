@@ -43,12 +43,12 @@ Hashtable *initialize_hashtable();
 /**
  * Free allocated space to hashtable
  */
-void free_hashtable(Hashtable *map);
+void free_hashtable(Hashtable **map);
 
 /**
  * Treat hashtable as a Counter and add 1 to current count of key
  */
-void add_to_hashtable(Hashtable *map, char *key);
+void add_to_hashtable(Hashtable **map, char *key);
 
 /**
  * Return the value of a key/value pair. Returns -1 if no key was found in the hashtable
