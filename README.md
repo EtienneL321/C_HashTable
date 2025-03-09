@@ -33,3 +33,25 @@ Rather than use GDB to debug, I will switch over to LLDB since it seems to be mo
 Use @ operand to print contiguous memory (in an array format)
 
 p (\*(\*map).val)@16
+
+# More to-do
+
+Add test cases for what is already working
+
+Add documentation on every function and how it works
+
+Can I remove the need to pass a reference of the map when adding elements?
+
+Change current hashtable so that the key can be of any type
+
+- Can I make the key an array too??
+
+Add more testing for different value types
+
+Add safety when using multi threading
+Add error handling when using the hashmap wrong (stderr)
+
+Try different hashing algorithms
+
+Look into new hashing method
+https://arxiv.org/pdf/2501.02305
